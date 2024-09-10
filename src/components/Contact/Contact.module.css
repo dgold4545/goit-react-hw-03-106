@@ -1,0 +1,38 @@
+.borderBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid #fff;
+  width: 350px;
+  height: 70px;
+  border-radius: 10px;
+}
+
+.borderBox > ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+li > a {
+  color: white;
+  text-decoration: none;
+}
+
+.borderBox > button {
+}
+
+.borderBox > button:hover {
+  background-color: white;
+  color: black;
+}
+
+.borderBox > button:focus {
+}
+
+strong {
+  margin-right: 10px;
+}
