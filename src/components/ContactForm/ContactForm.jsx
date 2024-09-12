@@ -15,13 +15,16 @@ const initialValues = {
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Too Short!")
+    .matches(/^[^\s]/, "Please, enter your name")
     .max(50, "Too Long!")
     .required("Required"),
   number: Yup.string()
+    .min(3, "Too Short!")
     .matches(
       /^[0-9]{3}-[0-9]{2}-[0-9]{2}$/,
       "The phone number format is 'xxx-xx-xx'"
     )
+    .max(50, "Too Long!")
     .required("Required"),
 });
 
