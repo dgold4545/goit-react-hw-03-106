@@ -1,29 +1,36 @@
 import css from "./Contact.module.css";
-import { FaPhoneAlt } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
+import { FaPhoneAlt, FaUser } from "react-icons/fa";
 
-export default function Contact({ userContact: { name, number } }) {
-  let base = "tel:+";
-  let telIntro = number.replace("-", "").replace("-", "");
+export default function Contact({
+  contactData: { name, number, id },
+  onDelete,
+}) {
+  const phoneHolder = "tel:+" + number.replace("-", "").replace("-", "");
 
   return (
     <div className={css.borderBox}>
       <ul>
-        <li>
+        <li className={css.space}>
           <strong>
-            <FaUser />
-          </strong>{" "}
+            <FaPhoneAlt />
+          </strong>
           {name}
         </li>
         <li>
           <strong>
-            <FaPhoneAlt />
-          </strong>{" "}
-          <a href={base + telIntro}>{number}</a>
+            <FaUser />
+          </strong>
+          <a href={phoneHolder}>{number}</a>
         </li>
       </ul>
-
-      <button type="button">Delete</button>
+      <button
+        type="button"
+        onClick={() => {
+          onDelete(id);
+        }}
+      >
+        Delete
+      </button>
     </div>
   );
 }

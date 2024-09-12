@@ -1,29 +1,60 @@
-import ContactForm from "../ContactForm/ContactForm";
-import ContactList from "../ContactList/ContactList";
-import SearchBox from "../SearchBox/SearchBox";
-
-import initialValue from "../../initialValue.json";
-
+import { useState, useEffect } from "react";
 import css from "./App.module.css";
-import { useState } from "react";
+import initialContacts from "../../initialValue.json";
+
+import ContactFrom from "../ContactForm/ContactForm";
+import SearchBox from "../SearchBox/SearchBox";
+import ContactList from "../ContactList/ContactList";
+
+const LOCAL_STORAGE_KEY = "phonebook";
 
 export default function App() {
-  const [startValues, setStartValue] = useState(initialValue);
+  const [searchContacts, setSearchContacts] = useState(() => {
+    const localStorageSavedData =
+      window.localStorage.getItem(LOCAL_STORAGE_KEY);
 
-  const [searchItem, setSearchItem] = useState("");
+    if (localStorageSavedData !== null) {
+      return JSON.parse(localStorageSavedData);
+    }
 
-  const search = initialValue.filter((elem) =>
-    elem.name.toLocaleLowerCase().includes(searchItem.toLocaleLowerCase())
+    return initialContacts;
+  });
+
+  const [findContact, setFindContact] = useState("");
+
+  const seekContacts = searchContacts.filter((contact) =>
+    contact.name.toLowerCase().includes(findContact.toLowerCase())
   );
 
-  console.log(search);
+  const addContact = (newContact) => {
+    setSearchContacts((prevContacts) => {
+      return [...prevContacts, newContact];
+    });
+  };
+
+  const handlerDelete = (taskId) => {
+    setSearchContacts((prevTasks) => {
+      return prevTasks.filter((task) => task.id !== taskId);
+    });
+  };
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify(searchContacts)
+    );
+  }, [searchContacts]);
 
   return (
-    <div>
+    <div className={css.phonebook}>
       <h1>Phonebook</h1>
-      <ContactForm />
-      <SearchBox searchItemS={searchItem} onSearchItem={setSearchItem} />
-      <ContactList initialValues={search} />
+
+      <ContactFrom onAddContact={addContact} />
+      <SearchBox
+        searchContact={findContact}
+        onSetSearchContact={setFindContact}
+      />
+      <ContactList contacts={seekContacts} onDelete={handlerDelete} />
     </div>
   );
 }
